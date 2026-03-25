@@ -110,7 +110,27 @@ function getClickableElements() {
   return getAllElements(selectors);
 }
 
+function isExternalSafetyHazard(el) {
+  if (el.tagName && el.tagName.toUpperCase() === "A" && el.href) {
+    try {
+      const url = new URL(el.href);
+      // If the link goes to notebookLM, google support, etc., abort!
+      if (
+        url.hostname.includes("notebooklm") ||
+        url.hostname.includes("support.google") ||
+        url.hostname.includes("accounts.google") ||
+        url.hostname.includes("workspace.google")
+      ) {
+        return true;
+      }
+    } catch (e) {}
+  }
+  return false;
+}
+
 function matchesKeyword(element) {
+  if (isExternalSafetyHazard(element)) return false;
+
   const text = (
     element.innerText || 
     element.textContent || 
@@ -300,6 +320,43 @@ function stopLoop() {
   }
   log("🔴 Automation STOPPED");
 }
+
+// ── 6. Auto-Pause when navigating away ──────────────────────────────────────
+
+let pauseOverlay = null;
+
+document.addEventListener("visibilitychange", () => {
+  if (!automationEnabled || !window.location.hostname.includes("skills.google")) return;
+  
+  if (document.hidden) {
+    log("Tab hidden → Pausing automation");
+    stopLoop();
+    
+    if (window === window.top) { // Only put UI on main frame, not iframes
+      pauseOverlay = document.createElement("div");
+      pauseOverlay.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(10, 22, 40, 0.9); backdrop-filter: blur(8px);
+        z-index: 2147483647; display: flex; flex-direction: column;
+        justify-content: center; align-items: center; color: #fff;
+        font-family: system-ui, sans-serif; transition: opacity 0.3s;
+      `;
+      pauseOverlay.innerHTML = `
+        <div style="font-size: 72px; margin-bottom: 20px;">⏸️</div>
+        <h1 style="font-size: 40px; margin: 0 0 10px 0; background: linear-gradient(90deg, #00e5ff, #7c4dff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Automation Paused</h1>
+        <p style="font-size: 18px; color: #a4b2c6;">You navigated away from this tab. Come back to resume!</p>
+      `;
+      document.body.appendChild(pauseOverlay);
+    }
+  } else {
+    log("Tab visible → Resuming automation");
+    if (pauseOverlay) {
+      pauseOverlay.remove();
+      pauseOverlay = null;
+    }
+    startLoop();
+  }
+});
 
 // ── State management ────────────────────────────────────────────────────────
 

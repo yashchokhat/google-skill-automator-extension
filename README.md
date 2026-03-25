@@ -5,14 +5,13 @@
 **A relentless, hyper-fast Chrome Extension that automatically skips videos, blitzes through labs, and auto-clicks through your online courses.** <br>
 *Specially tailored for maximum speed on Google Cloud Skills Boost.*
 
-**Developed by [YASH P. CHOKHAT](https://github.com/yashchokhat)**
+**Developed by [YASH P. CHOKHAT](https://github.com/yashchokhat) | [LinkedIn](https://www.linkedin.com/in/y%C4%81sh/)**
 
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-blue.svg)](#)
 [![Google Cloud Skills Boost](https://img.shields.io/badge/Supports-Google_Skills-success.svg)](#)
 [![Coursera & Udemy](https://img.shields.io/badge/Supports-Coursera_&_Udemy-success.svg)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
-<img width="300" src="icons/icon128.png" alt="Learning Automator Icon">
 
 </div>
 
@@ -71,6 +70,21 @@ The extension features a **dark, glassmorphic popup UI** built for modern aesthe
 
 ---
 
+## 🗂️ Project Structure
+
+```text
+learning-automator-extension/
+├── manifest.json      # Complete Manifest V3 configuration & permissions
+├── background.js      # Service Worker (State sync master)
+├── content.js         # The Engine (DOM traversal, native overrides, heuristics)
+├── popup.html         # Premium glassmorphic UI structure
+├── popup.js           # Interactive UI logic & browser tab bridging
+├── styles.css         # UI Styling and animations
+└── icons/             # 16, 48, and 128px high-res lightning bolt icons
+```
+
+---
+
 ## 🌐 Supported Platforms
 
 While explicitly optimized for **Google Cloud Skills Boost**, the automator works automatically across:
@@ -88,6 +102,6 @@ While explicitly optimized for **Google Cloud Skills Boost**, the automator work
 <div align="center">
 
 *This project is built for educational & fast-tracking purposes.* <br>
-**A Masterpiece by [Yash P. Chokhat](https://github.com/yashchokhat)**
+**A Masterpiece by [Yash P. Chokhat](https://github.com/yashchokhat) • [Connect on LinkedIn](https://www.linkedin.com/in/y%C4%81sh/)**
 
 </div>

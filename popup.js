@@ -36,10 +36,6 @@ toggle.addEventListener("change", () => {
       if (response && response.success) {
         updateUI(response.enabled);
         console.log(`[Automator Popup] Toggled → ${response.enabled ? "ON" : "OFF"}`);
-        
-        if (response.enabled) {
-          chrome.tabs.create({ url: "https://github.com/yashchokhat" });
-        }
       }
     }
   );
