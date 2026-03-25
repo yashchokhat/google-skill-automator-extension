@@ -1,120 +1,93 @@
-# ⚡ Learning Platform Automator — Chrome Extension
+<div align="center">
 
-A Chrome Extension (Manifest V3) that automates video-based online courses by controlling playback, auto-clicking navigation buttons, completing checkboxes, and scrolling pages.
+# ⚡ Learning Platform Automator
 
----
+**A relentless, hyper-fast Chrome Extension that automatically skips videos, blitzes through labs, and auto-clicks through your online courses.** <br>
+*Specially tailored for maximum speed on Google Cloud Skills Boost.*
 
-## 📦 Installation
+**Developed by [YASH P. CHOKHAT](https://github.com/yashchokhat)**
 
-1. **Download / Clone** this folder to your computer
-2. Open **Google Chrome** and navigate to `chrome://extensions/`
-3. Enable **Developer Mode** (toggle in the top-right corner)
-4. Click **"Load unpacked"**
-5. Select the `learning-automator-extension` folder
-6. The ⚡ icon appears in your toolbar — click it to toggle ON/OFF
+[![Manifest V3](https://img.shields.io/badge/Manifest-V3-blue.svg)](#)
+[![Google Cloud Skills Boost](https://img.shields.io/badge/Supports-Google_Skills-success.svg)](#)
+[![Coursera & Udemy](https://img.shields.io/badge/Supports-Coursera_&_Udemy-success.svg)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
----
+<img width="300" src="icons/icon128.png" alt="Learning Automator Icon">
 
-## 🗂️ File Structure
-
-```
-learning-automator-extension/
-├── manifest.json      # Extension config (Manifest V3)
-├── background.js      # Service worker — state management
-├── content.js         # Injected automation script
-├── popup.html         # Toggle UI markup
-├── popup.js           # Toggle UI logic
-├── styles.css         # Popup styling
-├── icons/
-│   ├── icon16.png
-│   ├── icon48.png
-│   └── icon128.png
-└── README.md
-```
+</div>
 
 ---
 
-## 📄 File Explanations
+## 🚀 Features & Superpowers
 
-### `manifest.json`
-Defines the extension's metadata, permissions, and structure:
-- **Manifest V3** — uses `service_worker` (no legacy background page)
-- **Permissions**: `storage` (persist ON/OFF state), `activeTab`
-- **Content Script**: injected on supported learning platforms at `document_idle`
-- **No external scripts** — fully self-contained
+This extension is built for **speed**. It uses advanced browser manipulation to instantly complete coursework, bypassing the safety mechanisms that normal extensions trigger.
 
-### `background.js` (Service Worker)
-- Sets default state (`enabled: false`) on first install
-- Listens for toggle messages from the popup
-- Broadcasts state changes to all tabs running the content script
-- Runs as an event-driven service worker (no persistent background page)
+### 🌟 Core Capabilities
+- **Direct YouTube Override**: Injects native `postMessage` commands to bypass cross-origin iframe restrictions and instantly force videos to `99999` seconds.
+- **Shadow DOM Penetration**: Standard DOM queries can't see Google's web components. This extension recursively drills through all `ShadowRoot` boundaries to hunt down hidden "Next Activity" buttons.
+- **Auto-Clicker**: Automatically clicks "Next", "Continue", "Submit", and "Got It".
+- **Auto-Scroll**: Triggers lazy-loaded content by scrolling gracefully to the bottom.
+- **Checkbox Ticker**: Seeks out any unchecked `<input type="checkbox">` and forces a tick.
 
-### `content.js` (Content Script)
-The core automation engine with **4 modular functions**:
+### ⚡ The "Google Skills" Fast Track
+When you visit `skills.google.com` or `cloudskillsboost.google`, the extension shifts into **Overdrive Mode**:
+1. Scan interval drops to `1000ms`.
+2. Any page with `/labs/`, `/quizzes/`, or `/assessments/` in the URL instantly gets skipped by forcefully clicking "Next".
+3. The video player overlay buttons (`Next activity`, `Mark as completed`) are instantly identified and clicked.
 
-| Module | What it does |
-|---|---|
-| `controlVideos()` | Finds `<video>` elements → sets speed to 16×, mutes, skips to end |
-| `clickButtons()` | Matches buttons by text (Next, Continue, Submit, etc.) → clicks with random delay |
-| `tickCheckboxes()` | Finds unchecked checkboxes → ticks them, dispatches change events |
-| `autoScroll()` | Scrolls down in increments to trigger lazy-loaded content |
+---
 
-**Safety features:**
-- Random delays (0.8–2.5 s) between actions to avoid detection
-- Only clicks visible, enabled buttons
-- Console logs every action for debugging
-- Non-blocking async loop
+## 🎨 User Interface
 
-### `popup.html` + `popup.js` + `styles.css`
-A dark-themed popup UI with:
-- ON/OFF toggle switch with animated slider
-- Status badge that changes color (red = OFF, cyan = ON)
-- Feature summary showing what the extension does
-- State persisted via `chrome.storage.local`
+The extension features a **dark, glassmorphic popup UI** built for modern aesthetics:
+- **Toggle Switch**: A smooth cyan-accented toggle to switch automation `ON`/`OFF`.
+- **Status Indicator**: Dynamic glowing badge showing the current state.
+- **GitHub Redirection**: Flipping the switch to `ON` instantly opens a new tab to [Yash's GitHub](https://github.com/yashchokhat) to credit the developer and share future updates.
+- **Developer Banner**: A large gradient banner to show appreciation to the author.
+
+---
+
+## 🛠️ Installation Guide
+
+1. Clone or download this repository to a folder on your machine.
+2. Open Google Chrome and go to `chrome://extensions/`
+3. Turn on **Developer mode** in the top right corner.
+4. Click **Load unpacked** in the top left.
+5. Select the folder containing these files.
+6. The ⚡ icon will appear in your Chrome toolbar. Pin it!
+
+> **Note**: Chrome may warn you that this extension "Can read and change all your data on the websites you visit" because of the `<all_urls>` permission. This is **required** to allow the Automator to bypass Youtube constraints and Shadow DOM networks!
+
+---
+
+## 💻 How It Works (Under the Hood)
+
+| File | Responsibilities |
+| :--- | :--- |
+| **`manifest.json`** | Uses V3 structure, injects script into all frames (`"all_frames": true`) matching `<all_urls>` to defeat iframe boundaries. |
+| **`background.js`** | The Service Worker that maintains the `ON/OFF` state across the browser via `chrome.storage.local`. |
+| **`content.js`** | The engine. Employs `TreeWalker` API for deep DOM traversal, `postMessage` for video hacking, and random delays (200-600ms) to bypass bot-detection algorithms. |
+| **`popup.js` / `popup.html`** | State handlers and aesthetics for the visual menu. Includes auto-redirect to GitHub logic. |
 
 ---
 
 ## 🌐 Supported Platforms
 
-| Platform | Domain |
-|---|---|
-| Google Cloud Skills Boost | `cloudskillsboost.google`, `skills.google` |
-| Coursera | `coursera.org` |
-| Udemy | `udemy.com` |
-| edX | `edx.org` |
-| LinkedIn Learning | `linkedin.com/learning` |
-| Google Skillshop | `skillshop.exceedlms.com` |
-| Pluralsight | `pluralsight.com` |
-
-> To add more domains, edit the `matches` array in `manifest.json`.
+While explicitly optimized for **Google Cloud Skills Boost**, the automator works automatically across:
+- Google Cloud Skills (`skills.google`)
+- Coursera (`coursera.org`)
+- Udemy (`udemy.com`)
+- edX (`edx.org`)
+- LinkedIn Learning (`linkedin.com/learning`)
+- Google Skillshop (`skillshop.exceedlms.com`)
+- Pluralsight (`pluralsight.com`)
+- And almost any site relying on standard HTML5 or YouTube-embedded video!
 
 ---
 
-## 🔧 Configuration
+<div align="center">
 
-Edit the `CONFIG` object at the top of `content.js`:
+*This project is built for educational & fast-tracking purposes.* <br>
+**A Masterpiece by [Yash P. Chokhat](https://github.com/yashchokhat)**
 
-```js
-const CONFIG = {
-  LOOP_INTERVAL_MS: 3000,       // Base interval between cycles
-  RANDOM_DELAY_MIN: 800,        // Min random delay (ms)
-  RANDOM_DELAY_MAX: 2500,       // Max random delay (ms)
-  SCROLL_STEP_PX: 600,          // Pixels per scroll step
-  MAX_PLAYBACK_RATE: 16,        // Video speed multiplier
-  BUTTON_KEYWORDS: [ ... ],     // Button text patterns to auto-click
-};
-```
-
----
-
-## 🐛 Debugging
-
-1. Open the website → Press `F12` → Console tab
-2. Look for `[Automator]` prefixed logs in cyan
-3. For background logs: `chrome://extensions/` → click **"service worker"** link under the extension
-
----
-
-## ⚠️ Disclaimer
-
-This extension is for **educational and personal productivity** purposes only. Use responsibly and in accordance with each platform's Terms of Service.
+</div>
