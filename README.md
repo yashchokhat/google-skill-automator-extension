@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ Learning Platform Automator
+# ⚡ Learning Platform Automator (New Version Comming Soon)
 
 **A relentless, hyper-fast Chrome Extension that automatically skips videos, blitzes through labs, and auto-clicks through your online courses.** <br>
 *Specially tailored for maximum speed on Google Cloud Skills Boost.*
